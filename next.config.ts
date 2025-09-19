@@ -1,10 +1,19 @@
-import withBundleAnalyzer from '@next/bundle-analyzer';
+// next.config.ts
+import type { NextConfig } from 'next';
 
-/** @type {import('next').NextConfig} */
-const nextConfig = {};
+let withBundleAnalyzer = (config: NextConfig) => config;
 
-const bundleAnalyzer = withBundleAnalyzer({
-  enabled: process.env.ANALYZE === 'true',
-});
+try {
+  // only require if installed
+  withBundleAnalyzer = require('@next/bundle-analyzer')({
+    enabled: process.env.ANALYZE === 'true',
+  });
+} catch (err) {
+  console.warn('⚠️ Bundle analyzer not installed, skipping...');
+}
 
-export default bundleAnalyzer(nextConfig);
+const nextConfig: NextConfig = {
+  reactStrictMode: true,
+};
+
+export default withBundleAnalyzer(nextConfig);
