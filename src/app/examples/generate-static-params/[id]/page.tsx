@@ -1,8 +1,6 @@
 // NOTE: This is an example for the App Router.
 // This file would typically be located at `app/some-route/[id]/page.tsx`.
 
-import { FC } from 'react';
-
 interface Post {
   id: number;
   title: string;
@@ -30,7 +28,8 @@ async function getPosts(): Promise<Post[]> {
 }
 
 // The Page component is an async Server Component that fetches its own data.
-const Page: FC<PageProps> = async ({ params }) => {
+// Remove FC type annotation, use plain async function for Server Component
+async function Page({ params }: PageProps) {
   const post = await getPost(params.id);
 
   return (
